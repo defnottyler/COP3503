@@ -7,20 +7,20 @@
 using namespace std;
 
 struct page {
-	string programName;
-	page *nextPage;
+    string programName;
+    page *nextPage;
 };
 
 class LinkedList {
 private:
-	page *head;
+    page *head;
 public:
-	LinkedList();
-
-	void addProgram(string programName, int numPages);
-	void displayList();
-
-	~LinkedList();
+    LinkedList();
+    
+    void addProgram(string programName, int numPages);
+   // void displayList();
+    
+   // ~LinkedList();
 };
 
 void bestFit();
