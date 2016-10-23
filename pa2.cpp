@@ -1,7 +1,11 @@
 #include "pa2.h"
 
+LinkedList::LinkedList() {
+	head->nextPage = NULL;
+}
+
 int main(int argc, char *argv[]) {
-	
+
 	if (string(argv[1]) == "best") {
 		bestFit();
 	}
@@ -43,6 +47,7 @@ void bestFit() {
 			numPages = kbToPages(programSize);
 
 			usedMemory.addProgram(programName, numPages);
+			usedMemory.displayList();
 		}
 		}
 	}
@@ -77,6 +82,7 @@ void worstFit() {
 			int numPages;
 			numPages = kbToPages(programSize);
 
+			for(int i=0; i<programSize; i++)
 			usedMemory.addProgram(programName, numPages);
 			usedMemory.displayList();
 		}
@@ -99,35 +105,28 @@ int kbToPages(int programSize) {
 }
 
 void LinkedList::addProgram(string programName, int numPages) {
-	// Initialize First Page if Not Initialized
-	int pageCount = numPages;
-	if (head == NULL) {
-		head->programName = programName;
-		head->nextPage = NULL;
-		pageCount--;
-	}
 
-	// Set the Pointer to the Beginning of the Linked List
-	page *current = head;
-	for (int i = 0; i<pageCount; i++) {
-		// Setup the New Page
+	//Check if head is null
+	//if it is, create new node object
+
+	if (head == NULL) {
 		page *newPage = new page;
 		newPage->programName = programName;
 		newPage->nextPage = NULL;
-		// While Traversing the Linked List
-		while (current != NULL) {
+		return;
+	}
 
-			// If the End of the List is Reached, Append the Page
-			if (current->nextPage == NULL) {
-				current->nextPage = newPage;
-				return;
-			}
+		page *current = head;
+		
+		page *newPage = new page;
+		newPage->programName = programName;
+		newPage->nextPage = NULL;
 
-
-			// Grab the nextPage Page (If not at the End of the Page)
+		while (current->nextPage != NULL) {
 			current = current->nextPage;
 		}
-	}
+		current->nextPage = newPage;
+	
 }
 
 
@@ -135,11 +134,7 @@ void LinkedList::displayList() {
 
 	page *current = head;
 	while (current != NULL) {
-		int i = 0;
-		cout << current << "  ";
-		i++;
-		if (i = 8)
-			cout << endl;
+		cout << "1" << endl;
 	}
 }
 
