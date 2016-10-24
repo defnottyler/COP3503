@@ -21,18 +21,19 @@ public:
 	LinkedList() {
 		head = NULL;
 	}
-
-	//add a program to list
-	void addProgram(string programName);
-	//return length of linked list
-	int listLength();
-	void insertBest(string programName);
+	void addFree(string programName);									//fills list with 32 Free pages
+	int listLength();													//returns length of LinkedList
+	void insertBest(string programName, int numPages);					//adds a program to LinkedList using best fit algorithm
+	void insertWorst(string programName, int numPages);					//adds a program to LinkedList using worst fit algorithm
+	bool isUsed(string programName);									//returns true if the program is in use
+	void killProgram(string programName);								//removes a program from LinkedList
+	int numFragments();													//returns total number of used memory fragments
+	void displayMemory();												//displays memory chart
 };
 
-//Functions explained in pa2.cpp
-void displayMenu();
-void bestFit();
-void worstFit();
-int kbToPages(int programSize);
+void bestFit();										//if user opts to use best fit algorithm
+void worstFit();									//if user opts to use worst fit algorithm
+int kbToPages(int programSize);						//takes program size in KBs and returns program size in pages
+void displayMenu();									//displays options menu
 
 #endif
