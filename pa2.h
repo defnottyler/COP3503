@@ -18,20 +18,21 @@ private:
 	page *head;
 public:
 	//default linked list constructor
-	LinkedList();
+	LinkedList() {
+		head = NULL;
+	}
 
 	//add a program to list
 	void addProgram(string programName);
 	//return length of linked list
 	int listLength();
-	void insertBest();
-
+	void insertBest(string programName);
 };
 
 //Functions explained in pa2.cpp
+void displayMenu();
 void bestFit();
 void worstFit();
-void displayMenu();
 int kbToPages(int programSize);
 
 #endif
