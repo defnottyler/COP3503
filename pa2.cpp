@@ -21,11 +21,10 @@ int main(int argc, char *argv[]) {
 
 void bestFit() {
 	// create 2 linked lists to represent the memory that is used and free
-	LinkedList usedMemory;
-	LinkedList freeMemory;
+	LinkedList memory;
 	// Add 32 pages of Free Memory
 	for (int i = 0; i < 32; i++)
-		freeMemory.addProgram("Free");
+		memory.addFree("Free");
 	cout << "Using best fit algorithm\n" << endl;
 	// display input options
 	displayMenu();
@@ -39,46 +38,37 @@ void bestFit() {
 			// Case 1 adds a program to used memory
 		case 1:
 		{
-
 			string programName;
 			cout << "Program name - ";
 			cin >> programName;
 			int programSize;
 			cout << "Program size - ";
 			cin >> programSize;
+			cout << endl;
 			// numPages will be the number of pages the program will occupy
 			int numPages;
 			numPages = kbToPages(programSize);
-			// int variables to keep track of overall amount of used/free memory
-			int usedCount = 0;
-			int freeCount = 32;
-
-			//if there is no used memory
-			if (usedMemory.listLength() == 0) {
-				// add program to used memory
-				for (int i = 0; i < numPages; i++) {
-					usedMemory.addProgram(programName);
-					usedCount++;
-					freeCount--;
-				}//ends for loop
-				break;
-			}
+			
 			//if there is used memory
-			else {
-				usedMemory.insertBest(programName);
+			if (!memory.isUsed(programName)) {
+				memory.insertBest(programName, numPages);
 				break;
 			}
+			else
+				cout << "Error, Program " << programName << " is already running." << endl;
+			break;
 		}//end case1
 			//Case 2 kills a program
 		case 2:
 		{
-			cout << "choice - " << choice << endl;
 			string programName;
 			cout << "Program name - ";
 			cin >> programName;
 			// if program is in used memory, kill it
-			if (usedMemory.isUsed(programName))
-				usedMemory.killProgram(programName);
+			if (memory.isUsed(programName)) {
+				memory.killProgram(programName);
+				break;
+			}
 			// if not, display error message
 			else
 				cout << "Error, no program called " << programName << " is running" << endl;
@@ -87,16 +77,17 @@ void bestFit() {
 			//Case 3 displays number of fragments of used memory
 		case 3:
 		{
-			cout << "choice - " << choice << endl;
-			cout << "There are " << usedMemory.numFragments() << " fragment(s)" << endl;
+			cout << "There are " << memory.numFragments() << " fragment(s)" << endl;
+			break;
 		}//ends case3
 			//Case 4 displays the memory in 4 lines
 		case 4:
 		{
-			cout << "choice - " << choice << endl;
-			usedMemory.displayMemory();
+			memory.displayMemory();
 			break;
 		}//ends case4
+		case 5:
+			break;
 		default:
 		{
 			cout << "choice - " << choice << endl;
@@ -107,13 +98,11 @@ void bestFit() {
 	} while (choice != 5);
 }//end bestFit()
 
-void worstFit() {
-	// create 2 linked lists to represent the memory that is used and free
-	LinkedList usedMemory;
-	LinkedList freeMemory;
+void worstFit() {// create 2 linked lists to represent the memory that is used and free
+	LinkedList memory;
 	// Add 32 pages of Free Memory
 	for (int i = 0; i < 32; i++)
-		freeMemory.addProgram("Free");
+		memory.addFree("Free");
 	cout << "Using worst fit algorithm\n" << endl;
 	// display input options
 	displayMenu();
@@ -127,46 +116,37 @@ void worstFit() {
 			// Case 1 adds a program to used memory
 		case 1:
 		{
-			cout << "choice - " << choice << endl;
 			string programName;
 			cout << "Program name - ";
 			cin >> programName;
 			int programSize;
 			cout << "Program size - ";
 			cin >> programSize;
+			cout << endl;
 			// numPages will be the number of pages the program will occupy
 			int numPages;
 			numPages = kbToPages(programSize);
-			// int variables to keep track of overall amount of used/free memory
-			int usedCount = 0;
-			int freeCount = 32;
 
-			//if there is no used memory
-			if (usedMemory.listLength() == 0) {
-				// add program to used memory
-				for (int i = 0; i < numPages; i++) {
-					usedMemory.addProgram(programName);
-					usedCount++;
-					freeCount--;
-				}//ends for loop
-				break;
-			}
 			//if there is used memory
-			else {
-				usedMemory.insertWorst(programName);
+			if (!memory.isUsed(programName)) {
+				memory.insertWorst(programName, numPages);
 				break;
 			}
+			else
+				cout << "Error, Program " << programName << " is already running." << endl;
+			break;
 		}//end case1
 		 //Case 2 kills a program
 		case 2:
 		{
-			cout << "choice - " << choice << endl;
 			string programName;
 			cout << "Program name - ";
 			cin >> programName;
 			// if program is in used memory, kill it
-			if (usedMemory.isUsed(programName))
-				usedMemory.killProgram(programName);
+			if (memory.isUsed(programName)) {
+				memory.killProgram(programName);
+				break;
+			}
 			// if not, display error message
 			else
 				cout << "Error, no program called " << programName << " is running" << endl;
@@ -175,27 +155,23 @@ void worstFit() {
 		 //Case 3 displays number of fragments of used memory
 		case 3:
 		{
-			cout << "choice - " << choice << endl;
-			cout << "There are " << usedMemory.numFragments() << " fragment(s)" << endl;
+			cout << "There are " << memory.numFragments() << " fragment(s)" << endl;
+			break;
 		}//ends case3
 		 //Case 4 displays the memory in 4 lines
 		case 4:
 		{
-			cout << "choice - " << choice << endl;
-			usedMemory.displayMemory();
+			memory.displayMemory();
 			break;
 		}//ends case4
-		//Case 5 exits the program
 		case 5:
+			break;
+		default:
 		{
 			cout << "choice - " << choice << endl;
 			break;
-		}//ends 5
-		//Default case means wrong input, try again
-		default:
-		{
-			cout << "Wrong input! Please try again." << endl;
-		}
+		}//ends default case
+
 		}//ends switch
 	} while (choice != 5);
 }//end worstFit()
@@ -221,33 +197,15 @@ void displayMenu() {
 	cout << "\n";
 }
 
-void LinkedList::addProgram(string programName) {
-
-	//Check if head is null
-	//if it is, create "temporary" page
-	//Assign head values through this page and return
-	if (head == NULL) {
-		page *temp = new page;
-		temp->programName = programName;
-		temp->nextPage = NULL;
-		head = temp;
-		return;
-	}
-	//Create page to traverse through list, starting at head
+void LinkedList::addFree(string programName) {
+	head = new page;
 	page *current = head;
-
-	//Create new page
-	page *newPage = new page;
-	newPage->programName = programName;
-	newPage->nextPage = NULL;
-	//While the page after current has a name
-	//continue to traverse through list
-	while (current->nextPage != NULL) {
+	for (int i = 0; i < 32; i++) {
+		current->programName = programName;
+		current->nextPage = new page;
 		current = current->nextPage;
 	}
-	//When the page past current is uninitialized
-	//Use the new page created above to initialize it
-	current->nextPage = newPage;
+	current->nextPage = NULL;
 	current = NULL;
 }
 
@@ -255,7 +213,7 @@ int LinkedList::listLength() {
 	int count = 0;
 	page *current = head;
 	//while the page is initialized, increment the count variable
-	while (current != NULL) {
+	while (current ->programName != "Free") {
 		count++;
 		current = current->nextPage;
 	}
@@ -263,59 +221,35 @@ int LinkedList::listLength() {
 	return count;
 }
 
-void LinkedList::insertBest(string programName) {
+void LinkedList::insertBest(string programName, int numPages) {
 	page *current = head;
-	page *temp;
-	page *endCheck;
-	int countUsed = 0;
-	int countFree = 0;
-	int freeAtEnd = 0;
-	int smallestFreeFrag = 40;
-
+	int freeCount = 0;
+	//count number of pages of free memory
 	for (int i = 0; i < 32; i++) {
-		//if current page isn't Free
-		if (current != NULL) {
-			countUsed++;
-			current = current->nextPage;
-		}
-		//if current page is Free
-		else if (current == NULL) {
-			countFree++;
-			//if next page is Free and free memory counter is smaller than the smallest fragment of free memory
-			//store that fragment as the smallest free fragment and mark the location using page *temp
-			if (current->nextPage != NULL) {
-				if (countFree < smallestFreeFrag) {
-					temp = current;
-					smallestFreeFrag = countFree;
-					countFree = 0;
-				}
-			}
-			current = current->nextPage;
-		}
-		//check if rest of pages from this point are Free
-		endCheck = current;
-		for (int k = i; k < 32; k++) {
-			freeAtEnd++;
-			//set freeAtEnd equal to 0 if there is a program in used memory before the end of the list
-			if (endCheck != NULL) {
-				freeAtEnd = 0;
-				break;
-			}
-		}
-		//if the program ends with at least 1 page of Free memory check if that fragment is the largest free memory fragment
-		//if it is, mark the location with temp
-		if (freeAtEnd != 0) {
-			if (freeAtEnd < smallestFreeFrag) {
-				smallestFreeFrag = freeAtEnd;
-				temp = current;
-			}
-		}
-		
+		if (current->programName == "Free")
+			freeCount++;
+		current = current->nextPage;
 	}
+	current = head;
+	// if all memory is free
+	if (freeCount == 32 && freeCount > numPages) {
+		for (int i = 0; i < numPages; i++) {
+			current->programName = programName;
+			current = current->nextPage;
+		}
+		cout << "Program " << programName << " added successfully, " << numPages << " page(s) used." << endl;
+		current = NULL;
+		return;
+	}
+
+
+
 	
+
+	current = NULL;
 }
 
-void LinkedList::insertWorst(string programName) {
+void LinkedList::insertWorst(string programName, int numPages) {
 
 }
 
@@ -325,12 +259,13 @@ bool LinkedList::isUsed(string programName) {
 	for (int i = 0; i < 32; i++) {
 		if (current->programName == programName)
 			return true;
+		current = current->nextPage;
 	}
 	current = NULL;
 	return false;
 }
 
-int LinkedList::killProgram(string programName) {
+void LinkedList::killProgram(string programName) {
 	page *current = head;
 	int killingSpree = 0;
 
@@ -342,25 +277,25 @@ int LinkedList::killProgram(string programName) {
 		else
 			current = current->nextPage;
 	}
+	cout << "Program " << programName << " successfully killed, " << killingSpree << " page(s) reclaimed." << endl;
 	current = NULL;
-	return killingSpree;
 }
 
 int LinkedList::numFragments() {
 	page *current = head;
 	int numFrags = 0;
 
-	if (current != NULL) {
+	if (current ->programName != "Free") {
 		numFrags++;
 		current = current->nextPage;
 	}
 	int i = 1;
 	while(i<32) {
-		while (current != NULL) {
+		while (current ->programName != "Free") {
 			current = current->nextPage;
 			i++;
 		}
-		while (current == NULL) {
+		while (current ->programName == "Free") {
 			current = current->nextPage;
 			i++;
 		}
@@ -376,12 +311,10 @@ void LinkedList::displayMemory() {
 	page *current = head;
 	
 	for (int i = 0; i < 32; i++) {
-		if (i > 0)
-			cout << "\t";
-		if (current != NULL)
-			cout << current->programName;
-		else
-			cout << "Free";
+		cout << current->programName;
+		cout << "\t";
+		current = current->nextPage;
+	
 		if ((i + 1) % 8 == 0)
 			cout << endl;
 	}
